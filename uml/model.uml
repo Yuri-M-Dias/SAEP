@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>model</OriginalElement>
+  <nodes>
+    <node x="489.0" y="136.0">model.TipoRelato</node>
+    <node x="699.0" y="79.0">model.Relato</node>
+    <node x="319.5" y="980.0">model.Processo</node>
+    <node x="21.5" y="1018.0">model.Docente</node>
+    <node x="17.0" y="578.0">model.Parecer</node>
+    <node x="-4.5" y="797.0">model.Avaliacao</node>
+    <node x="-29.0" y="1336.0">model.Expressao</node>
+    <node x="297.5" y="340.0">model.RADOC</node>
+    <node x="671.5" y="1037.0">model.TipoProcesso</node>
+    <node x="1071.5" y="-3.0">model.Atributo</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="model.RADOC" target="model.Relato">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="model.Relato" target="model.RADOC">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="model.Processo" target="model.RADOC">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="model.Processo" target="model.TipoProcesso">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="model.Parecer" target="model.Avaliacao">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="model.Processo" target="model.Docente">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="model.RADOC" target="model.Parecer">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="model.Relato" target="model.TipoRelato">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="model.Parecer" target="model.RADOC">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8930348258706466" x="610.5153203342619" y="489.61838440111427" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
