@@ -23,6 +23,15 @@
     </build>
 
     <dependencies>
+
+        <!-- Modelo -->
+        <dependency>
+            <groupId>com.github.kyriosdata.saep</groupId>
+            <artifactId>saep-dominio</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <!-- Coisas do DB -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
@@ -33,11 +42,13 @@
             <artifactId>bson</artifactId>
             <version>2.13.3</version>
         </dependency>
+
         <dependency>
-            <groupId>org.mongodb.morphia</groupId>
-            <artifactId>morphia</artifactId>
-            <version>1.2.0</version>
+            <groupId>org.mongojack</groupId>
+            <artifactId>mongojack</artifactId>
+            <version>2.6.1</version>
         </dependency>
+
     </dependencies>
 
 </project>
