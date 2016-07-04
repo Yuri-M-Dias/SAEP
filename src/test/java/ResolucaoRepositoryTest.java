@@ -1,5 +1,3 @@
-package repository;
-
 import br.ufg.inf.es.saep.sandbox.dominio.Regra;
 import br.ufg.inf.es.saep.sandbox.dominio.Resolucao;
 import br.ufg.inf.es.saep.sandbox.dominio.ResolucaoRepository;
@@ -7,12 +5,14 @@ import com.mongodb.DB;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import repository.MongoConnection;
+import repository.ResolucaoRepositoryMongoImpl;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ResolucaoRepositoryTests {
+public class ResolucaoRepositoryTest {
 
   private static ResolucaoRepository resolucaoRepository;
   private static DB mongoDatabase;
