@@ -26,7 +26,7 @@ public class ResolucaoRepositoryMongoImpl extends BaseMongoRepository<Resolucao>
   @Override
   public String persiste(Resolucao resolucao) {
     Resolucao resolucaoSalva = create(resolucao);
-    return resolucao.getId();
+    return resolucao.getNome();
   }
 
   @Override

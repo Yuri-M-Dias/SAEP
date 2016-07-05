@@ -2,6 +2,7 @@ package framework;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import json.SAEPJacksonModule;
 import org.mongojack.JacksonDBCollection;
 import org.mongojack.WriteResult;
 
@@ -13,39 +14,50 @@ public abstract class BaseMongoRepository<T> {
   protected String collectionName;
   protected DB mongoDatabase;
   protected DBCollection mongoCollection;
-  // Assumindo o Id como String
+  // Assumindo o _Id como String
   protected JacksonDBCollection<T, String> jacksonCollection;
+  protected Class currentGenericClass;
 
-  public BaseMongoRepository(String collectionName, DB mongoDatabase, Class clazz){
+  protected BaseMongoRepository(String collectionName, DB mongoDatabase, Class clazz){
+    this.currentGenericClass = clazz;
     this.collectionName = collectionName;
     this.mongoDatabase = mongoDatabase;
     // Cria a coleção sozinho se ela não existir
     this.mongoCollection = mongoDatabase.getCollection(collectionName);
-    this.jacksonCollection = JacksonDBCollection.wrap(this.mongoCollection, clazz, String
-      .class);
+    this.jacksonCollection = JacksonDBCollection.wrap(this.mongoCollection, this.currentGenericClass, String
+      .class, SAEPJacksonModule.createSAEPObjectMapper());
   }
 
-  public T create(T elemento) {
+  protected T create(T elemento) {
     WriteResult<T, String> result = jacksonCollection.insert(elemento);
     T objetoSalvo = result.getSavedObject();
     return objetoSalvo;
   }
 
-  public T findById(String id){
+  protected T findById(String id){
     T element = jacksonCollection.findOneById(id);
     return element;
   }
 
-  public T update(String idAntigo, T novoElemento){
+  protected T update(String idAntigo, T novoElemento){
     WriteResult<T, String> result  = jacksonCollection.updateById(idAntigo, novoElemento);
     T objetoAtualizado = result.getSavedObject();
     return objetoAtualizado;
   }
 
-  public T delete(String id) {
+  protected T delete(String id) {
     WriteResult<T, String> result = jacksonCollection.removeById(id);
     T objetoDeletado = result.getSavedObject();
     return objetoDeletado;
+  }
+
+  /**
+   * Pega a classe genérica instanciada atualmente.
+   *
+   * @return a classe T anotada para essa classe base
+   */
+  protected Class getCurrentGenericClass(){
+    return currentGenericClass;
   }
 
 }

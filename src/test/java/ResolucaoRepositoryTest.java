@@ -25,16 +25,30 @@ public class ResolucaoRepositoryTest {
   }
 
   @Test
-  public void adicionaRegras(){
-
+  public void persisteTipo(){
+    resolucaoRepository.persisteTipo(null);
   }
 
   @Test
-  public void adicionaResolucao(){
+  public void persisteResolucao(){
     Resolucao resolucao = criaResolucao();
-    resolucaoRepository.persiste(resolucao);
+    String identificador = resolucaoRepository.persiste(resolucao);
+    Assert.assertNotNull("Resolução não foi salva com sucesso.", identificador);
     Resolucao resolucaoSalva = resolucaoRepository.byId("123");
-    Assert.assertEquals("As resolução não está sendo salva", resolucao, resolucaoSalva);
+    Assert.assertNotNull("Resolução não foi encontrada com sucesso.", resolucaoSalva);
+    Assert.assertEquals("As resolução não está sendo salva.", resolucao, resolucaoSalva);
+  }
+
+  @Test
+  public void findResolucaoById(){
+    Resolucao resolucaoSalva = resolucaoRepository.byId("123");
+    Assert.assertNotNull("Resolução não foi encontrada com sucesso.", resolucaoSalva);
+  }
+
+  @Test
+  public void removeResolucao(){
+    boolean removido = resolucaoRepository.remove("123");
+    Assert.assertTrue("Não consegui remover a resolução", removido);
   }
 
   private Resolucao criaResolucao(){
@@ -47,6 +61,7 @@ public class ResolucaoRepositoryTest {
     for (int i = 0; i < 5; i++) {
       String placeholder = "regra-" + i;
       List<String> dependeDe = new ArrayList<>();
+      dependeDe.add("nada");
       Regra regra = new Regra(1, placeholder, 20, 5, placeholder, placeholder, placeholder, placeholder,placeholder,
         5, dependeDe);
       regras.add(regra);
