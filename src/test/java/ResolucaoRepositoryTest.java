@@ -1,9 +1,9 @@
 import br.ufg.inf.es.saep.sandbox.dominio.Regra;
 import br.ufg.inf.es.saep.sandbox.dominio.Resolucao;
 import br.ufg.inf.es.saep.sandbox.dominio.ResolucaoRepository;
+import com.github.fakemongo.Fongo;
 import com.mongodb.DB;
 import org.junit.*;
-import repository.MongoConnection;
 import repository.ResolucaoRepositoryMongoImpl;
 
 import java.util.ArrayList;
@@ -22,7 +22,8 @@ public class ResolucaoRepositoryTest {
   @BeforeClass
   public static void initDatabaseConnection(){
     //TODO: mock database
-    mongoDatabase = MongoConnection.getDBConnection();
+    Fongo fongo = new Fongo("mongo test server");
+    mongoDatabase = fongo.getDB("test");
     resolucaoRepository = new ResolucaoRepositoryMongoImpl(mongoDatabase);
   }
 
@@ -31,8 +32,10 @@ public class ResolucaoRepositoryTest {
    */
   @AfterClass
   public static void deleteConnection(){
-    MongoConnection.deleteDB();
-    MongoConnection.closeDBConnection();
+    mongoDatabase.getMongo().dropDatabase("test");
+    mongoDatabase.getMongo().close();
+    //MongoConnection.deleteDB();
+    //MongoConnection.closeDBConnection();
   }
 
   @Before
