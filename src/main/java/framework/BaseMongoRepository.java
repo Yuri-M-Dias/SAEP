@@ -45,10 +45,9 @@ public abstract class BaseMongoRepository<T> {
     return objetoAtualizado;
   }
 
-  protected T delete(String id) {
+  protected void delete(String id) {
     WriteResult<T, String> result = jacksonCollection.removeById(id);
-    T objetoDeletado = result.getSavedObject();
-    return objetoDeletado;
+    //return objetoDeletado;
   }
 
   /**

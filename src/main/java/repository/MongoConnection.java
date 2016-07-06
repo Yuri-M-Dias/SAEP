@@ -7,24 +7,35 @@ import java.net.UnknownHostException;
 
 public class MongoConnection {
 
-  public static DB getDBConnection(){
+  private static MongoClient mongo = null;
+  private static final String DB_NAME = "saep";
+
+  public static DB getDBConnection() {
     // Rodando no Docker
-    MongoClient mongo = null;
     try {
       mongo = new MongoClient("172.17.0.1", 27017);
     } catch (UnknownHostException e) {
       e.printStackTrace();
+      throw new SecurityException("Não consegui abrir o banco de dados.", e);
     }
-    if(mongo == null){
+    if (mongo == null) {
       throw new SecurityException("Não consegui abrir o banco de dados.");
     }
     // if database doesn't exists, MongoDB will create it for you
-    DB db = mongo.getDB("saep");
+    DB db = mongo.getDB(DB_NAME);
     return db;
   }
 
-  public DB getDBConnection(String collectionName){
-    return null;
+  public static void closeDBConnection() {
+    mongo.close();
+  }
+
+  public static void createDB() {
+    mongo.getDB(DB_NAME);
+  }
+
+  public static void deleteDB() {
+    mongo.dropDatabase(DB_NAME);
   }
 
 }

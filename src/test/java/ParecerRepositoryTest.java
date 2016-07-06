@@ -1,5 +1,6 @@
 import br.ufg.inf.es.saep.sandbox.dominio.ParecerRepository;
 import com.mongodb.DB;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import repository.MongoConnection;
@@ -19,6 +20,15 @@ public class ParecerRepositoryTest {
     mongoDatabase = MongoConnection.getDBConnection();
     parecerRepository = new ParecerRepositoryMongoImpl(mongoDatabase);
   }
+
+  /**
+   * Fecha a conexão com o Mongo.
+   */
+  @AfterClass
+  public static void deleteConnection(){
+    MongoConnection.closeDBConnection();
+  }
+
 
   @Test
   public void persisteParecer(){
