@@ -37,10 +37,7 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
   public boolean remove(String identificador) {
     //TODO: validation
     resolucaoDAO.findByIdAndRemove(identificador);
-    if (byId(identificador) != null) {
-      return false;
-    }
-    return true;
+    return byId(identificador) == null;
   }
 
   @Override
@@ -71,7 +68,8 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
   @Override
   public List<Tipo> tiposPeloNome(String nome) {
     //TODO:
-    return null;
+    List<Tipo> tipos = tipoDAO.findByName(nome);
+    return tipos;
   }
 
 }

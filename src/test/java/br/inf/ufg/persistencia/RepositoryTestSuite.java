@@ -1,7 +1,8 @@
-package br.inf.ufg.persistencia.test;
+package br.inf.ufg.persistencia;
 
-import br.inf.ufg.persistencia.test.repository.ParecerRepositoryTest;
-import br.inf.ufg.persistencia.test.repository.ResolucaoRepositoryTest;
+import br.inf.ufg.persistencia.repository.ParecerTest;
+import br.inf.ufg.persistencia.repository.ResolucaoTest;
+import br.inf.ufg.persistencia.repository.TipoTest;
 import com.github.fakemongo.Fongo;
 import com.mongodb.DB;
 import org.junit.AfterClass;
@@ -15,8 +16,9 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  ParecerRepositoryTest.class,
-  ResolucaoRepositoryTest.class
+  ParecerTest.class,
+  ResolucaoTest.class,
+  TipoTest.class
 })
 public class RepositoryTestSuite {
 
@@ -32,12 +34,12 @@ public class RepositoryTestSuite {
     Fongo fongo = new Fongo("mongo test server");
     mongoDatabase = fongo.getDB("test");
 
-    /*
+    /**
     // Actual Database
     mongoDatabase = MongoConnection.getDBConnection();
     MongoConnection.deleteDB();
     mongoDatabase = MongoConnection.getDBConnection();
-    */
+     */
 
   }
 

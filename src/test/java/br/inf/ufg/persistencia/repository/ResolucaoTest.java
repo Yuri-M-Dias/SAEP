@@ -1,68 +1,45 @@
-package br.inf.ufg.persistencia.test.repository;
+package br.inf.ufg.persistencia.repository;
 
-import br.inf.ufg.persistencia.repository.ResolucaoRepositoryMongoImpl;
-import br.inf.ufg.persistencia.test.RepositoryTestSuite;
+import br.inf.ufg.persistencia.RepositoryTestSuite;
 import br.ufg.inf.es.saep.sandbox.dominio.Regra;
 import br.ufg.inf.es.saep.sandbox.dominio.Resolucao;
 import br.ufg.inf.es.saep.sandbox.dominio.ResolucaoRepository;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
-public class ResolucaoRepositoryTest {
+public class ResolucaoTest {
 
-  private static final String DB_NAME = "test";
   private static ResolucaoRepository resolucaoRepository;
-  private String resolucaoId;
 
   /**
-   * Abre a conexão com o banco e instancia o br.inf.ufg.persistencia.test.repository.
+   * Abre a conexão com o banco.
    */
   @BeforeClass
   public static void initDatabaseConnection(){
     resolucaoRepository = new ResolucaoRepositoryMongoImpl(RepositoryTestSuite.getMongoDatabase());
   }
 
-  @Before
-  public void before(){
-    Resolucao resolucao = criaResolucao("1");
-    String identificador = resolucaoRepository.persiste(resolucao);
-    resolucaoId = identificador;
-  }
-
-  @After
-  public void after(){
-    if(resolucaoRepository.byId(resolucaoId) != null){
-      resolucaoRepository.remove(resolucaoId);
-    }
-  }
-
   @Test
-  public void persisteResolucao(){
-    Resolucao resolucao = criaResolucao("2");
+  public void CRDResolucaoNormal(){
+    Resolucao resolucao = criaResolucao(UUID.randomUUID().toString());
     String identificador = resolucaoRepository.persiste(resolucao);
     Assert.assertNotNull("Resolução não foi salva com sucesso.", identificador);
     Resolucao resolucaoSalva = resolucaoRepository.byId(identificador);
     Assert.assertNotNull("Resolução não foi encontrada com sucesso.", resolucaoSalva);
     Assert.assertEquals("As resolução não está sendo salva.", resolucao, resolucaoSalva);
-  }
-
-  @Test
-  public void findResolucaoById(){
-    Resolucao resolucaoSalva = resolucaoRepository.byId(resolucaoId);
-    Assert.assertNotNull("Resolução não foi encontrada com sucesso.", resolucaoSalva);
-  }
-
-  @Test
-  public void removeResolucao(){
-    boolean removido = resolucaoRepository.remove(resolucaoId);
+    boolean removido = resolucaoRepository.remove(identificador);
     Assert.assertTrue("Não consegui remover a resolução", removido);
   }
 
   @Test
   public void recuperaListaResolucoesDisponiveis(){
+    // Cria as resoluções para ter os ids
     List<String> idsSalvos = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       Resolucao resolucao = criaResolucao(String.valueOf(i));
@@ -70,12 +47,8 @@ public class ResolucaoRepositoryTest {
       idsSalvos.add(identificador);
     }
     List<String> resolucoes = resolucaoRepository.resolucoes();
-    resolucoes.forEach(id -> Assert.assertNotNull("Resolução com ID nulo!", id));
-  }
-
-  @Test
-  public void persisteTipo(){
-    //resolucaoRepository.persisteTipo(null);
+    resolucoes.forEach(id -> Assert.assertNotNull("Resolução com ID nulo.", id));
+    Assert.assertEquals("IDs recuperados são diferentes.", idsSalvos, resolucoes);
   }
 
   private Resolucao criaResolucao(String id){

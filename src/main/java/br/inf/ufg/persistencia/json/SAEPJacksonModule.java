@@ -23,6 +23,8 @@ public class SAEPJacksonModule extends SimpleModule {
     context.setMixInAnnotations(Parecer.class, ParecerMixin.class);
     context.setMixInAnnotations(Pontuacao.class, PontuacaoMixin.class);
     context.setMixInAnnotations(Valor.class, ValorMixin.class);
+    context.setMixInAnnotations(Atributo.class, AtributoMixin.class);
+    context.setMixInAnnotations(Tipo.class, TipoMixin.class);
   }
 
   /**
