@@ -6,6 +6,7 @@ import br.inf.ufg.persistencia.repository.TipoTest;
 import com.github.fakemongo.Fongo;
 import com.mongodb.DB;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -40,6 +41,8 @@ public class RepositoryTestSuite {
     MongoConnection.deleteDB();
     mongoDatabase = MongoConnection.getDBConnection();
      */
+    System.out.println("Conexão com o mongo: " + mongoDatabase);
+    Assert.assertNotNull("Falha na conexão com o mongo", mongoDatabase);
 
   }
 
