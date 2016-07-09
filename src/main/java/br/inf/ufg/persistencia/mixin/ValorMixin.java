@@ -1,4 +1,4 @@
-package mixin;
+package br.inf.ufg.persistencia.mixin;
 
 import br.ufg.inf.es.saep.sandbox.dominio.Valor;
 

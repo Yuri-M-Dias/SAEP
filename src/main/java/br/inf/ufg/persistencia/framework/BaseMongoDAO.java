@@ -1,15 +1,15 @@
-package framework;
+package br.inf.ufg.persistencia.framework;
 
+import br.inf.ufg.persistencia.json.SAEPJacksonModule;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import json.SAEPJacksonModule;
 import org.mongojack.JacksonDBCollection;
 import org.mongojack.WriteResult;
 
 /**
  * Encapsula operações em comum entre os repositórios.
  */
-public abstract class BaseMongoRepository<T> {
+public abstract class BaseMongoDAO<T> {
 
   protected String collectionName;
   protected DB mongoDatabase;
@@ -18,7 +18,7 @@ public abstract class BaseMongoRepository<T> {
   protected JacksonDBCollection<T, String> jacksonCollection;
   protected Class currentGenericClass;
 
-  protected BaseMongoRepository(String collectionName, DB mongoDatabase, Class clazz){
+  protected BaseMongoDAO(String collectionName, DB mongoDatabase, Class clazz){
     this.currentGenericClass = clazz;
     this.collectionName = collectionName;
     this.mongoDatabase = mongoDatabase;
@@ -28,24 +28,24 @@ public abstract class BaseMongoRepository<T> {
       .class, SAEPJacksonModule.createSAEPObjectMapper());
   }
 
-  protected T create(T elemento) {
+  public T create(T elemento) {
     WriteResult<T, String> result = jacksonCollection.insert(elemento);
     T objetoSalvo = result.getSavedObject();
     return objetoSalvo;
   }
 
-  protected T findById(String id){
+  public T findById(String id){
     T element = jacksonCollection.findOneById(id);
     return element;
   }
 
-  protected T update(String idAntigo, T novoElemento){
+  public T update(String idAntigo, T novoElemento){
     WriteResult<T, String> result  = jacksonCollection.updateById(idAntigo, novoElemento);
     T objetoAtualizado = result.getSavedObject();
     return objetoAtualizado;
   }
 
-  protected void delete(String id) {
+  public void delete(String id) {
     WriteResult<T, String> result = jacksonCollection.removeById(id);
     //return objetoDeletado;
   }
@@ -55,7 +55,7 @@ public abstract class BaseMongoRepository<T> {
    *
    * @return a classe T anotada para essa classe base
    */
-  protected Class getCurrentGenericClass(){
+  public Class getCurrentGenericClass(){
     return currentGenericClass;
   }
 

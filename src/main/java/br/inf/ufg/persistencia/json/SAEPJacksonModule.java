@@ -1,16 +1,18 @@
-package json;
+package br.inf.ufg.persistencia.json;
 
+import br.inf.ufg.persistencia.mixin.*;
 import br.ufg.inf.es.saep.sandbox.dominio.*;
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import mixin.*;
 import org.mongojack.internal.MongoJackModule;
 
+/**
+ * Módulo customizado do Jackson para registrar configurações específicas.
+ */
 public class SAEPJacksonModule extends SimpleModule {
 
   public SAEPJacksonModule() {
-    super("SAEP-Module", new Version(0,0,1,null));
+    super();
   }
 
   @Override
@@ -23,6 +25,10 @@ public class SAEPJacksonModule extends SimpleModule {
     context.setMixInAnnotations(Valor.class, ValorMixin.class);
   }
 
+  /**
+   * Referência estática que cria um novo ObjectMapper do Jackson com as configurações necessárias.
+   * @return um ObjectMapper pronto para serializar as classes do modelo atual.
+   */
   public static ObjectMapper createSAEPObjectMapper(){
     SAEPJacksonModule saepJacksonModule = new SAEPJacksonModule();
     ObjectMapper mapper = new ObjectMapper();

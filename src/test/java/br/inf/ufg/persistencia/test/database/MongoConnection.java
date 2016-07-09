@@ -1,4 +1,4 @@
-package repository;
+package br.inf.ufg.persistencia.test.database;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
@@ -21,7 +21,7 @@ public class MongoConnection {
     if (mongo == null) {
       throw new SecurityException("Não consegui abrir o banco de dados.");
     }
-    // if database doesn't exists, MongoDB will create it for you
+    // if br.inf.ufg.persistencia.test.database doesn't exists, MongoDB will create it for you
     DB db = mongo.getDB(DB_NAME);
     return db;
   }

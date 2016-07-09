@@ -1,4 +1,4 @@
-package mixin;
+package br.inf.ufg.persistencia.mixin;
 
 import br.ufg.inf.es.saep.sandbox.dominio.Regra;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -18,7 +18,7 @@ public abstract class RegraMixin extends Regra {
                     @JsonProperty("entao") String entao,
                     @JsonProperty("senao") String senao,
                     @JsonProperty("tipoRelato") String tipoRelato,
-                    @JsonProperty("pontosPorItem") int pontosPorItem,
+                    @JsonProperty("pontosPorItem") float pontosPorItem,
                     @JsonProperty("dependeDe") List<String> dependeDe) {
     super(tipo, descricao, valorMaximo, valorMinimo, variavel, expressao, entao, senao, tipoRelato, pontosPorItem, dependeDe);
   }

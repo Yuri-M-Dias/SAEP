@@ -1,43 +1,42 @@
-package repository;
+package br.inf.ufg.persistencia.repository;
 
+import br.inf.ufg.persistencia.dao.ResolucaoDAO;
+import br.inf.ufg.persistencia.dao.TipoDAO;
 import br.ufg.inf.es.saep.sandbox.dominio.Resolucao;
 import br.ufg.inf.es.saep.sandbox.dominio.ResolucaoRepository;
 import br.ufg.inf.es.saep.sandbox.dominio.Tipo;
 import com.mongodb.DB;
-import framework.BaseMongoRepository;
-import org.mongojack.DBCursor;
-import org.mongojack.DBQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by yuri on 28/06/16.
- */
-public class ResolucaoRepositoryMongoImpl extends BaseMongoRepository<Resolucao> implements ResolucaoRepository {
+public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
+
+  private ResolucaoDAO resolucaoDAO;
+  private TipoDAO tipoDAO;
 
   public ResolucaoRepositoryMongoImpl(DB mongoDatabase) {
-    super("resolucao", mongoDatabase, Resolucao.class);
+    resolucaoDAO = new ResolucaoDAO(mongoDatabase);
+    tipoDAO = new TipoDAO(mongoDatabase);
   }
 
   @Override
   public Resolucao byId(String id) {
     //TODO: validation
-    Resolucao resolucaoEncontrada = jacksonCollection.findOne(DBQuery.is("id", id));
+    Resolucao resolucaoEncontrada = resolucaoDAO.findById(id);
     return resolucaoEncontrada;
   }
 
   @Override
   public String persiste(Resolucao resolucao) {
     //TODO: validation
-    Resolucao resolucaoSalva = create(resolucao);
+    Resolucao resolucaoSalva = resolucaoDAO.create(resolucao);
     return resolucao.getId();
   }
 
   @Override
   public boolean remove(String identificador) {
     //TODO: validation
-    jacksonCollection.findAndRemove(DBQuery.is("id", identificador));
+    resolucaoDAO.findByIdAndRemove(identificador);
     if (byId(identificador) != null) {
       return false;
     }
@@ -46,29 +45,32 @@ public class ResolucaoRepositoryMongoImpl extends BaseMongoRepository<Resolucao>
 
   @Override
   public List<String> resolucoes() {
-    List<String> resolucoesIds = new ArrayList<>();
-    DBCursor<Resolucao> resolucaoDBCursor = jacksonCollection.find();
-    resolucaoDBCursor.forEach(resolucao -> resolucoesIds.add(resolucao.getId()));
+    List<String> resolucoesIds = resolucaoDAO.findAllIds();
     return resolucoesIds;
   }
 
   @Override
   public void persisteTipo(Tipo tipo) {
-
+    //TODO: validation
+    tipoDAO.create(tipo);
   }
 
   @Override
   public void removeTipo(String codigo) {
-
+    //TODO: validation
+    tipoDAO.delete(codigo);
   }
 
   @Override
   public Tipo tipoPeloCodigo(String codigo) {
-    return null;
+    //TODO: validation
+    Tipo tipo = tipoDAO.findById(codigo);
+    return tipo;
   }
 
   @Override
   public List<Tipo> tiposPeloNome(String nome) {
+    //TODO:
     return null;
   }
 

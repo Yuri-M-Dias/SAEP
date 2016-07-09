@@ -1,10 +1,11 @@
+package br.inf.ufg.persistencia.test.repository;
+
+import br.inf.ufg.persistencia.repository.ResolucaoRepositoryMongoImpl;
+import br.inf.ufg.persistencia.test.RepositoryTestSuite;
 import br.ufg.inf.es.saep.sandbox.dominio.Regra;
 import br.ufg.inf.es.saep.sandbox.dominio.Resolucao;
 import br.ufg.inf.es.saep.sandbox.dominio.ResolucaoRepository;
-import com.github.fakemongo.Fongo;
-import com.mongodb.DB;
 import org.junit.*;
-import repository.ResolucaoRepositoryMongoImpl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,30 +13,16 @@ import java.util.List;
 
 public class ResolucaoRepositoryTest {
 
+  private static final String DB_NAME = "test";
   private static ResolucaoRepository resolucaoRepository;
-  private static DB mongoDatabase;
   private String resolucaoId;
 
   /**
-   * Abre a conexão com o banco e instancia o repository.
+   * Abre a conexão com o banco e instancia o br.inf.ufg.persistencia.test.repository.
    */
   @BeforeClass
   public static void initDatabaseConnection(){
-    //TODO: mock database
-    Fongo fongo = new Fongo("mongo test server");
-    mongoDatabase = fongo.getDB("test");
-    resolucaoRepository = new ResolucaoRepositoryMongoImpl(mongoDatabase);
-  }
-
-  /**
-   * Fecha a conexão com o Mongo.
-   */
-  @AfterClass
-  public static void deleteConnection(){
-    mongoDatabase.getMongo().dropDatabase("test");
-    mongoDatabase.getMongo().close();
-    //MongoConnection.deleteDB();
-    //MongoConnection.closeDBConnection();
+    resolucaoRepository = new ResolucaoRepositoryMongoImpl(RepositoryTestSuite.getMongoDatabase());
   }
 
   @Before
@@ -47,7 +34,9 @@ public class ResolucaoRepositoryTest {
 
   @After
   public void after(){
-    resolucaoRepository.remove(resolucaoId);
+    if(resolucaoRepository.byId(resolucaoId) != null){
+      resolucaoRepository.remove(resolucaoId);
+    }
   }
 
   @Test

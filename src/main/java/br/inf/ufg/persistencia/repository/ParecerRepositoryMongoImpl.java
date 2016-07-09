@@ -1,13 +1,20 @@
-package repository;
+package br.inf.ufg.persistencia.repository;
 
+import br.ufg.inf.es.saep.sandbox.dominio.ParecerRepository;
+
+import br.inf.ufg.persistencia.dao.ParecerDAO;
+import br.inf.ufg.persistencia.dao.RadocDAO;
 import br.ufg.inf.es.saep.sandbox.dominio.*;
 import com.mongodb.DB;
-import framework.BaseMongoRepository;
 
-public class ParecerRepositoryMongoImpl extends BaseMongoRepository<Parecer> implements ParecerRepository {
+public class ParecerRepositoryMongoImpl implements ParecerRepository {
+
+  private ParecerDAO parecerDAO;
+  private RadocDAO radocDAO;
 
   public ParecerRepositoryMongoImpl(DB mongoDatabase) {
-    super("parecer", mongoDatabase, Parecer.class);
+    parecerDAO = new ParecerDAO(mongoDatabase);
+    radocDAO = new RadocDAO(mongoDatabase);
   }
 
   @Override
@@ -16,7 +23,7 @@ public class ParecerRepositoryMongoImpl extends BaseMongoRepository<Parecer> imp
   }
 
   @Override
-  public void removeNota(Avaliavel original) {
+  public void removeNota(String s, Avaliavel avaliavel) {
 
   }
 
