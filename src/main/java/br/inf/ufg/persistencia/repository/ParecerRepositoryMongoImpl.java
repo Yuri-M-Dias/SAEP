@@ -29,22 +29,25 @@ public class ParecerRepositoryMongoImpl implements ParecerRepository {
 
   @Override
   public void persisteParecer(Parecer parecer) {
-
+    parecerDAO.create(parecer);
   }
 
   @Override
   public void atualizaFundamentacao(String parecer, String fundamentacao) {
-
+    if(byId(parecer) == null){
+      throw new IdentificadorDesconhecido("parecer");
+    }
+    parecerDAO.atualizaFundamentacao(parecer, fundamentacao);
   }
 
   @Override
   public Parecer byId(String id) {
-    return null;
+    return parecerDAO.findById(id);
   }
 
   @Override
   public void removeParecer(String id) {
-
+    parecerDAO.delete(id);
   }
 
   @Override

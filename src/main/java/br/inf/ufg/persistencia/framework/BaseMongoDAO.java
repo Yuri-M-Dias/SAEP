@@ -1,8 +1,10 @@
 package br.inf.ufg.persistencia.framework;
 
 import br.inf.ufg.persistencia.json.SAEPJacksonModule;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import org.mongojack.DBQuery;
 import org.mongojack.JacksonDBCollection;
 import org.mongojack.WriteResult;
 
@@ -26,6 +28,9 @@ public abstract class BaseMongoDAO<T> {
     this.mongoCollection = mongoDatabase.getCollection(collectionName);
     this.jacksonCollection = JacksonDBCollection.wrap(this.mongoCollection, this.currentGenericClass, String
       .class, SAEPJacksonModule.createSAEPObjectMapper());
+    BasicDBObject idIndex = new BasicDBObject("id", 1);
+    BasicDBObject idIndexOptions = new BasicDBObject("unique", "true");
+    jacksonCollection.createIndex(idIndex, idIndexOptions);
   }
 
   public T create(T elemento) {
@@ -35,18 +40,12 @@ public abstract class BaseMongoDAO<T> {
   }
 
   public T findById(String id){
-    T element = jacksonCollection.findOneById(id);
+    T element = jacksonCollection.findOne(DBQuery.is("id", id));
     return element;
   }
 
-  public T update(String idAntigo, T novoElemento){
-    WriteResult<T, String> result  = jacksonCollection.updateById(idAntigo, novoElemento);
-    T objetoAtualizado = result.getSavedObject();
-    return objetoAtualizado;
-  }
-
   public void delete(String id) {
-    WriteResult<T, String> result = jacksonCollection.removeById(id);
+    T radoc = jacksonCollection.findAndRemove(DBQuery.is("id", id));
     //return objetoDeletado;
   }
 

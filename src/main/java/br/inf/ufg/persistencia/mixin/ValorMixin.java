@@ -7,18 +7,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public abstract class ValorMixin extends Valor {
 
   @JsonCreator
-  public ValorMixin(@JsonProperty("valor") String valor) {
+  public ValorMixin(@JsonProperty("string") String valor) {
     super(valor);
   }
 
-  @JsonCreator
-  public ValorMixin(@JsonProperty("valor") float valor) {
+  public ValorMixin(@JsonProperty("real") float valor) {
     super(valor);
   }
 
-  @JsonCreator
-  public ValorMixin(@JsonProperty("valor") boolean valor) {
+  public ValorMixin(@JsonProperty("logico") boolean valor) {
     super(valor);
+  }
+
+  @JsonProperty("real")
+  @Override
+  public float getFloat() {
+    return super.getFloat();
+  }
+
+  @JsonProperty("logico")
+  @Override
+  public boolean getBoolean() {
+    return super.getBoolean();
+  }
+
+  @JsonProperty("string")
+  @Override
+  public String getString() {
+    return super.getString();
   }
 
 }

@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.mongojack.internal.MongoJackModule;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.PropertyAccessor.FIELD;
+
 /**
  * Módulo customizado do Jackson para registrar configurações específicas.
  */
@@ -27,7 +30,8 @@ public class SAEPJacksonModule extends SimpleModule {
     context.setMixInAnnotations(Parecer.class, ParecerMixin.class);
     context.setMixInAnnotations(Radoc.class, RadocMixin.class);
     context.setMixInAnnotations(Relato.class, RelatoMixin.class);
-    context.setMixInAnnotations(Valor.class, ValorMixin.class);
+    context.setMixInAnnotations(Nota.class, NotaMixin.class);
+
   }
 
   /**
@@ -36,8 +40,12 @@ public class SAEPJacksonModule extends SimpleModule {
    */
   public static ObjectMapper createSAEPObjectMapper(){
     SAEPJacksonModule saepJacksonModule = new SAEPJacksonModule();
+    saepJacksonModule.addSerializer(Valor.class, new ValorSerializer());
+    saepJacksonModule.addDeserializer(Valor.class, new ValorDeserialzer());
+    saepJacksonModule.addDeserializer(Avaliavel.class, new AvaliavelDeserializer());
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(saepJacksonModule);
+    mapper.setVisibility(FIELD, ANY);
     MongoJackModule.configure(mapper);
     return mapper;
   }

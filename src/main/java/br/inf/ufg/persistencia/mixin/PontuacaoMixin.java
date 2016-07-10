@@ -8,9 +8,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public abstract class PontuacaoMixin extends Pontuacao {
 
   @JsonCreator
-  public PontuacaoMixin(@JsonProperty("nome") String nome,
+  public PontuacaoMixin(@JsonProperty("atributo") String nome,
                         @JsonProperty("valor") Valor valor) {
     super(nome, valor);
   }
+
+  @JsonProperty("atributo")
+  public abstract String getAtributo();
 
 }

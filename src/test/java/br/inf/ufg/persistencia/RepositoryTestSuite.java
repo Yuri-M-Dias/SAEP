@@ -1,10 +1,10 @@
 package br.inf.ufg.persistencia;
 
+import br.inf.ufg.persistencia.database.MongoConnection;
 import br.inf.ufg.persistencia.repository.ParecerTest;
 import br.inf.ufg.persistencia.repository.RadocTest;
 import br.inf.ufg.persistencia.repository.ResolucaoTest;
 import br.inf.ufg.persistencia.repository.TipoTest;
-import com.github.fakemongo.Fongo;
 import com.mongodb.DB;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -33,16 +33,22 @@ public class RepositoryTestSuite {
   @BeforeClass
   public static void initDatabaseConnection(){
 
+    // Enable MongoDB logging in general
+    System.setProperty("DEBUG.MONGO", "true");
+
+    // Enable DB operation tracing
+    System.setProperty("DB.TRACE", "true");
+
+    /**
     //Database mock
     Fongo fongo = new Fongo("mongo test server");
     mongoDatabase = fongo.getDB("test");
+    */
 
-    /**
     // Actual Database
     mongoDatabase = MongoConnection.getDBConnection();
     MongoConnection.deleteDB();
     mongoDatabase = MongoConnection.getDBConnection();
-     */
 
     System.out.println("Conexão com o mongo: " + mongoDatabase);
     Assert.assertNotNull("Falha na conexão com o mongo", mongoDatabase);

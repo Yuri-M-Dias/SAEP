@@ -8,10 +8,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public abstract class NotaMixin extends Nota {
 
   @JsonCreator
-  public NotaMixin(@JsonProperty("origem") Avaliavel origem,
-                   @JsonProperty("destino") Avaliavel destino,
+  public NotaMixin(@JsonProperty("original") Avaliavel origem,
+                   @JsonProperty("novo") Avaliavel destino,
                    @JsonProperty("justificativa") String justificativa) {
     super(origem, destino, justificativa);
   }
+
+  @JsonProperty("novo")
+  public abstract Avaliavel getItemNovo();
+
+  @JsonProperty("original")
+  public abstract Avaliavel getItemOriginal();
 
 }
