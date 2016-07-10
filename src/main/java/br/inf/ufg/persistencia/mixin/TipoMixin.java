@@ -9,7 +9,7 @@ import org.mongojack.ObjectId;
 
 import java.util.Set;
 
-public class TipoMixin extends Tipo {
+public abstract class TipoMixin extends Tipo {
 
   @JsonCreator
   public TipoMixin(@Id @ObjectId String id,

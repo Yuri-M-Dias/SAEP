@@ -26,7 +26,8 @@ public class ResolucaoDAO extends BaseMongoDAO<Resolucao> {
     return resolucao;
   }
 
-  public void findByIdAndRemove(String id) {
+  @Override
+  public void delete(String id) {
     Resolucao resolucao = jacksonCollection.findAndRemove(DBQuery.is("id", id));
     if(!Objects.equals(resolucao.getId(), id)){
       throw new SecurityException("Error while removing from the database!");
@@ -37,6 +38,5 @@ public class ResolucaoDAO extends BaseMongoDAO<Resolucao> {
     List<String> ids = jacksonCollection.distinct("id");
     return ids;
   }
-
 
 }

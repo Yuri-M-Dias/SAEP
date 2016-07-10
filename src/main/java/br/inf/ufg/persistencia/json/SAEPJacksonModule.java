@@ -20,11 +20,14 @@ public class SAEPJacksonModule extends SimpleModule {
     super.setupModule(context);
     context.setMixInAnnotations(Resolucao.class, ResolucaoMixin.class);
     context.setMixInAnnotations(Regra.class, RegraMixin.class);
-    context.setMixInAnnotations(Parecer.class, ParecerMixin.class);
     context.setMixInAnnotations(Pontuacao.class, PontuacaoMixin.class);
-    context.setMixInAnnotations(Valor.class, ValorMixin.class);
     context.setMixInAnnotations(Atributo.class, AtributoMixin.class);
     context.setMixInAnnotations(Tipo.class, TipoMixin.class);
+
+    context.setMixInAnnotations(Parecer.class, ParecerMixin.class);
+    context.setMixInAnnotations(Radoc.class, RadocMixin.class);
+    context.setMixInAnnotations(Relato.class, RelatoMixin.class);
+    context.setMixInAnnotations(Valor.class, ValorMixin.class);
   }
 
   /**

@@ -1,6 +1,7 @@
 package br.inf.ufg.persistencia;
 
 import br.inf.ufg.persistencia.repository.ParecerTest;
+import br.inf.ufg.persistencia.repository.RadocTest;
 import br.inf.ufg.persistencia.repository.ResolucaoTest;
 import br.inf.ufg.persistencia.repository.TipoTest;
 import com.github.fakemongo.Fongo;
@@ -19,7 +20,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
   ParecerTest.class,
   ResolucaoTest.class,
-  TipoTest.class
+  TipoTest.class,
+  RadocTest.class
 })
 public class RepositoryTestSuite {
 
@@ -41,6 +43,7 @@ public class RepositoryTestSuite {
     MongoConnection.deleteDB();
     mongoDatabase = MongoConnection.getDBConnection();
      */
+
     System.out.println("Conexão com o mongo: " + mongoDatabase);
     Assert.assertNotNull("Falha na conexão com o mongo", mongoDatabase);
 

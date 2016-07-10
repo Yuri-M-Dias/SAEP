@@ -25,17 +25,17 @@ public class TipoDAO extends BaseMongoDAO<Tipo> {
     return tipo;
   }
 
+  @Override
+  public void delete(String id) {
+    Tipo tipo = jacksonCollection.findAndRemove(DBQuery.is("id", id));
+    //Check?
+  }
+
   public List<Tipo> findByName(String name) {
     List<Tipo> tipos;
     DBCursor<Tipo> tiposQuery = jacksonCollection.find(DBQuery.regex("nome", Pattern.compile(name)));
     tipos = tiposQuery.toArray();
     return tipos;
-  }
-
-  @Override
-  public void delete(String id) {
-    Tipo tipo = jacksonCollection.findAndRemove(DBQuery.is("id", id));
-    //Check?
   }
 
 }

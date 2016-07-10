@@ -39,7 +39,6 @@ public class ResolucaoTest {
 
   @Test
   public void recuperaListaResolucoesDisponiveis(){
-    // Cria as resoluções para ter os ids
     List<String> idsSalvos = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       Resolucao resolucao = criaResolucao(String.valueOf(i));
@@ -52,8 +51,7 @@ public class ResolucaoTest {
   }
 
   private Resolucao criaResolucao(String id){
-    Resolucao resolucao = new Resolucao(id, "123", "Uma resolução.", new Date(), criaRegras());
-    return resolucao;
+    return new Resolucao(id, "123", "Uma resolução.", new Date(), criaRegras());
   }
 
   private List<Regra> criaRegras(){

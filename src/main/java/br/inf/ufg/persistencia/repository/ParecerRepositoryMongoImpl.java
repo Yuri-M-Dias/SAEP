@@ -49,17 +49,21 @@ public class ParecerRepositoryMongoImpl implements ParecerRepository {
 
   @Override
   public Radoc radocById(String identificador) {
-    return null;
+    return radocDAO.findById(identificador);
   }
 
   @Override
   public String persisteRadoc(Radoc radoc) {
-    return null;
+    Radoc radocSalvo = radocDAO.create(radoc);
+    return radocSalvo.getId();
   }
 
   @Override
   public void removeRadoc(String identificador) {
-
+    radocDAO.delete(identificador);
+    if(radocById(identificador) != null){
+      throw new SecurityException("Falha ao remover radoc.");
+    }
   }
 
 }
