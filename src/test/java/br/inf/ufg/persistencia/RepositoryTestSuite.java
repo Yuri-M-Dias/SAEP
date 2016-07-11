@@ -32,10 +32,8 @@ public class RepositoryTestSuite {
    */
   @BeforeClass
   public static void initDatabaseConnection(){
-
     // Enable MongoDB logging in general
     System.setProperty("DEBUG.MONGO", "true");
-
     // Enable DB operation tracing
     System.setProperty("DB.TRACE", "true");
 

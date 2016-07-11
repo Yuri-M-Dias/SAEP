@@ -65,10 +65,10 @@ public class ParecerTest {
     Nota notaNova = geraNota(pontuacao);
     parecerRepository.adicionaNota(identificador, notaNova);
     Parecer parecerAtualizado = parecerRepository.byId(identificador);
-    Assert.assertTrue("Nota não está sendo adicionada no parecer.", parecerAtualizado.getNotas().contains(notaNova));
+    Assert.assertTrue("Nota não está sendo adicionada no parecer.", parecerAtualizado.getNotas().size() == 6);
     parecerRepository.removeNota(identificador, pontuacao);
     parecerAtualizado = parecerRepository.byId(identificador);
-    Assert.assertTrue("Nota não está sendo removida.", !parecerAtualizado.getNotas().contains(notaNova));
+    Assert.assertTrue("Nota não está sendo removida.", parecerAtualizado.getNotas().size() == 5);
     parecerRepository.removeParecer(identificador);
     Parecer parecerRemovido = parecerRepository.byId(identificador);
     Assert.assertNull("Parecer não foi removido com sucesso.", parecerRemovido);
