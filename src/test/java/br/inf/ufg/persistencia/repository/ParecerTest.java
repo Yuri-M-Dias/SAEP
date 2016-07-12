@@ -2,10 +2,7 @@ package br.inf.ufg.persistencia.repository;
 
 import br.inf.ufg.persistencia.RepositoryTestSuite;
 import br.inf.ufg.persistencia.json.SAEPJacksonModule;
-import br.ufg.inf.es.saep.sandbox.dominio.Nota;
-import br.ufg.inf.es.saep.sandbox.dominio.Parecer;
-import br.ufg.inf.es.saep.sandbox.dominio.ParecerRepository;
-import br.ufg.inf.es.saep.sandbox.dominio.Pontuacao;
+import br.ufg.inf.es.saep.sandbox.dominio.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.Assert;
@@ -90,13 +87,15 @@ public class ParecerTest {
     parecerRepository.persisteParecer(parecer);
     Parecer parecerSalvo = parecerRepository.byId(identificador);
     Assert.assertNotNull("Parecer válido não está sendo salvo.", parecerSalvo);
+    Nota notaAAlterar = parecerSalvo.getNotas().get(1);
+    Avaliavel original = notaAAlterar.getItemOriginal();
     String atributo = UUID.randomUUID().toString();
-    Pontuacao pontuacao = geraPontuacao(atributo);
-    Nota notaNova = geraNota(pontuacao);
+    Pontuacao pontuacaoNova = geraPontuacao(atributo);
+    Nota notaNova = geraNota(pontuacaoNova, original);
     parecerRepository.adicionaNota(identificador, notaNova);
     Parecer parecerAtualizado = parecerRepository.byId(identificador);
-    Assert.assertThat("Nota não sendo adicionada ao parecer.",
-      parecerAtualizado.getNotas(), IsCollectionWithSize.hasSize(6));
+    Assert.assertThat("Nota não foi adicionada corretamente, ou antiga não foi modificada.",
+      parecerAtualizado.getNotas(), IsCollectionWithSize.hasSize(5));
     parecerRepository.removeParecer(identificador);
     Parecer parecerRemovido = parecerRepository.byId(identificador);
     Assert.assertNull("Parecer não foi removido com sucesso.", parecerRemovido);

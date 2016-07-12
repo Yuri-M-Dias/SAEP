@@ -44,14 +44,23 @@ public class UtilsGenerator {
   }
 
   public static Nota geraNota(Pontuacao pontuacao) {
-    Avaliavel novo = pontuacao;
+    Avaliavel antigo = pontuacao;
     Valor valorNum = new Valor(true);
     Map<String, Valor> map = new HashMap<>();
     map.put("a key", valorNum);
     String atributo = UUID.randomUUID().toString();
-    Avaliavel antigo = new Relato(atributo, map);
-    return new Nota(novo, antigo, "uma descricao");
+    Avaliavel novo = new Relato(atributo, map);
+    return new Nota(antigo, novo, "uma descricao");
   }
+
+  public static Nota geraNota(Pontuacao pontuacao, Avaliavel original) {
+    Avaliavel novo = pontuacao;
+    Valor valorNum = new Valor(true);
+    Map<String, Valor> map = new HashMap<>();
+    map.put("a key", valorNum);
+    return new Nota(original, novo, "uma descricao");
+  }
+
 
   public static Tipo criaTipo(String id, String namePrepend, String nameAppend) {
     Set<Atributo> atributos = new HashSet<>();

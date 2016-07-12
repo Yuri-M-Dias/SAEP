@@ -3,7 +3,6 @@ package br.inf.ufg.persistencia.dao;
 import br.inf.ufg.persistencia.framework.BaseMongoDAO;
 import br.inf.ufg.persistencia.json.SAEPJacksonModule;
 import br.ufg.inf.es.saep.sandbox.dominio.Avaliavel;
-import br.ufg.inf.es.saep.sandbox.dominio.IdentificadorDesconhecido;
 import br.ufg.inf.es.saep.sandbox.dominio.Nota;
 import br.ufg.inf.es.saep.sandbox.dominio.Parecer;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,8 +41,11 @@ public class ParecerDAO extends BaseMongoDAO<Parecer> {
         }
         return result;
       }).findFirst();
-    Nota nota = notaEncontrada
-      .orElseThrow(() -> new IdentificadorDesconhecido("Avaliável não encontrado para o parecer: " + parecerId));
+    // Se não existir, não faz nada.
+    if(!notaEncontrada.isPresent()) {
+      return;
+    }
+    Nota nota = notaEncontrada.get();
     jacksonCollection.findAndModify(DBQuery.is("id", parecerId),
       DBUpdate.pull("notas", nota));
   }

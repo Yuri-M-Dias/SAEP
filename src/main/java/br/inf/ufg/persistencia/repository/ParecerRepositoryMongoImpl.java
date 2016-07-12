@@ -22,6 +22,7 @@ public class ParecerRepositoryMongoImpl implements ParecerRepository {
     if(byId(parecer) == null){
       throw new IdentificadorDesconhecido("Identificador " + parecer + " para parecer inexistente.");
     }
+    removeNota(parecer, nota.getItemOriginal());
     parecerDAO.adicionaNota(parecer, nota);
   }
 
