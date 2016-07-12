@@ -8,10 +8,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ResolucaoTest {
 
@@ -60,8 +57,10 @@ public class ResolucaoTest {
       String placeholder = "regra-" + i;
       List<String> dependeDe = new ArrayList<>();
       dependeDe.add("nada");
-      Regra regra = new Regra(placeholder, 1, placeholder, 20, 5, placeholder, placeholder, placeholder,
-        placeholder, 5, dependeDe);
+      Random rand = new Random();
+      int tipoRegra = rand.nextInt(5);
+      Regra regra = new Regra(placeholder, tipoRegra, placeholder, 20, 5,
+        placeholder, placeholder, placeholder, placeholder, 5, dependeDe);
       regras.add(regra);
     }
     return regras;

@@ -1,10 +1,7 @@
 package br.inf.ufg.persistencia.repository;
 
 import br.inf.ufg.persistencia.RepositoryTestSuite;
-import br.ufg.inf.es.saep.sandbox.dominio.Atributo;
-import br.ufg.inf.es.saep.sandbox.dominio.IdentificadorExistente;
-import br.ufg.inf.es.saep.sandbox.dominio.ResolucaoRepository;
-import br.ufg.inf.es.saep.sandbox.dominio.Tipo;
+import br.ufg.inf.es.saep.sandbox.dominio.*;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -77,6 +74,23 @@ public class TipoTest {
     Assert.assertEquals("Coleção de tipos não é igual.", tiposAProcurar, tipos);
   }
 
+  @Test
+  public void removeTipoUtilizadoPorResolucaoFalha() throws Exception {
+    String identificadorTipo = UUID.randomUUID().toString();
+    Tipo tipo = criaTipo(identificadorTipo, "tipo", "");
+    resolucaoRepository.persisteTipo(tipo);
+    Tipo tipoSalvo = resolucaoRepository.tipoPeloCodigo(identificadorTipo);
+    Assert.assertNotNull("Tipo não foi encontrada com sucesso pelo identificador.", tipoSalvo);
+    Assert.assertEquals("O tipo não está sendo salvo.", tipo, tipoSalvo);
+    String identificadorResolucao = UUID.randomUUID().toString();
+    String idResolucaoSalvo = resolucaoRepository
+      .persiste(criaResolucaoQueUsaTipo(identificadorResolucao, identificadorTipo));
+    Resolucao resolucaoSalva = resolucaoRepository.byId(idResolucaoSalvo);
+    Assert.assertNotNull("Resolução com tipo não foi persistida!", resolucaoSalva);
+    exception.expect(ResolucaoUsaTipoException.class);
+    resolucaoRepository.removeTipo(identificadorTipo);
+  }
+
   private Tipo criaTipo(String id, String namePrepend, String nameAppend){
     Set<Atributo> atributos = new HashSet<>();
     for (int i = 0; i < 5; i++) {
@@ -85,4 +99,21 @@ public class TipoTest {
     return new Tipo(id, namePrepend + "-" + id + "-" + nameAppend, "É um tipo.", atributos);
   }
 
+  private Resolucao criaResolucaoQueUsaTipo(String id, String identificadorTipo){
+    return new Resolucao(id, "123", "Uma resolução.", new Date(), criaRegras(identificadorTipo));
+  }
+
+  private List<Regra> criaRegras(String identifcadorTipo){
+    List<Regra> regras = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      String placeholder = "regra-" + i;
+      List<String> dependeDe = new ArrayList<>();
+      dependeDe.add("alguma coisa");
+      //Tipo 0 pra salvar o id
+      Regra regra = new Regra(placeholder, 0, placeholder, 20, 5, placeholder, placeholder, placeholder,
+        identifcadorTipo, 5, dependeDe);
+      regras.add(regra);
+    }
+    return regras;
+  }
 }

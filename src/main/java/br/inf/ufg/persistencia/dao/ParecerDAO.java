@@ -41,8 +41,7 @@ public class ParecerDAO extends BaseMongoDAO<Parecer> {
           e.printStackTrace();
         }
         return result;
-      })
-      .findFirst();
+      }).findFirst();
     Nota nota = notaEncontrada
       .orElseThrow(() -> new IdentificadorDesconhecido("Avaliável não encontrado para o parecer: " + parecerId));
     jacksonCollection.findAndModify(DBQuery.is("id", parecerId),

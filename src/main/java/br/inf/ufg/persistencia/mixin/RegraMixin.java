@@ -23,4 +23,7 @@ public abstract class RegraMixin extends Regra {
     super(variavel, tipo, descricao, valorMaximo, valorMinimo, expressao, entao, senao, tipoRelato, pontosPorItem, dependeDe);
   }
 
+  @JsonProperty("tipoRelato")
+  @Override
+  public abstract String getTipoRelato();
 }

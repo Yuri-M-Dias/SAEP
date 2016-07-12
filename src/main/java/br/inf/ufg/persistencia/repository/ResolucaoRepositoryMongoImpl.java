@@ -63,8 +63,9 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
 
   @Override
   public void removeTipo(String codigo) {
-    // Como verificar se uma resolução usa tipo?
-    //throw new ResolucaoUsaTipoException("?");
+    if(resolucaoDAO.verificaSeAlgumaResolucaoUsaRelato(codigo)){
+      throw new ResolucaoUsaTipoException("O tipo é utilizado por pelo menos uma resolução!");
+    }
     tipoDAO.delete(codigo);
   }
 

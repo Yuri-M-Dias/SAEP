@@ -28,6 +28,7 @@ public abstract class BaseMongoDAO<T> {
     this.mongoCollection = mongoDatabase.getCollection(collectionName);
     this.jacksonCollection = JacksonDBCollection.wrap(this.mongoCollection, this.currentGenericClass, String
       .class, SAEPJacksonModule.createSAEPObjectMapper());
+    //Assume que toda coleção tem um campo "id" para ser unique.
     BasicDBObject idIndex = new BasicDBObject("id", 1);
     BasicDBObject idIndexOptions = new BasicDBObject("unique", "true");
     jacksonCollection.createIndex(idIndex, idIndexOptions);
