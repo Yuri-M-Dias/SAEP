@@ -9,18 +9,18 @@ import java.util.List;
 public abstract class RegraMixin extends Regra {
 
   @JsonCreator
-  public RegraMixin(@JsonProperty("tipo") int tipo,
+  public RegraMixin(@JsonProperty("variavel") String variavel,
+                    @JsonProperty("tipo") int tipo,
                     @JsonProperty("descricao") String descricao,
                     @JsonProperty("valorMaximo") float valorMaximo,
                     @JsonProperty("valorMinimo") float valorMinimo,
-                    @JsonProperty("variavel") String variavel,
                     @JsonProperty("expressao") String expressao,
                     @JsonProperty("entao") String entao,
                     @JsonProperty("senao") String senao,
                     @JsonProperty("tipoRelato") String tipoRelato,
                     @JsonProperty("pontosPorItem") float pontosPorItem,
                     @JsonProperty("dependeDe") List<String> dependeDe) {
-    super(tipo, descricao, valorMaximo, valorMinimo, variavel, expressao, entao, senao, tipoRelato, pontosPorItem, dependeDe);
+    super(variavel, tipo, descricao, valorMaximo, valorMinimo, expressao, entao, senao, tipoRelato, pontosPorItem, dependeDe);
   }
 
 }

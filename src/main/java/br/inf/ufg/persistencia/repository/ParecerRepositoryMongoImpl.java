@@ -26,11 +26,11 @@ public class ParecerRepositoryMongoImpl implements ParecerRepository {
   }
 
   @Override
-  public void removeNota(String s, Avaliavel avaliavel) {
-    if(byId(s) == null){
-      throw new IdentificadorDesconhecido("Identificador " + s + " para parecer inexistente.");
+  public void removeNota(String parecer, Avaliavel avaliavel) {
+    if(byId(parecer) == null){
+      throw new IdentificadorDesconhecido("Identificador " + parecer + " para parecer inexistente.");
     }
-    parecerDAO.removeNota(s, avaliavel);
+    parecerDAO.removeNota(parecer, avaliavel);
   }
 
   @Override
@@ -57,9 +57,6 @@ public class ParecerRepositoryMongoImpl implements ParecerRepository {
   @Override
   public void removeParecer(String id) {
     parecerDAO.delete(id);
-    if(byId(id) != null){
-      throw new SecurityException("Parecer não foi removido com sucesso.");
-    }
   }
 
   @Override
@@ -69,16 +66,19 @@ public class ParecerRepositoryMongoImpl implements ParecerRepository {
 
   @Override
   public String persisteRadoc(Radoc radoc) {
+    if(radoc.getId() != null && byId(radoc.getId()) != null){
+      throw new IdentificadorExistente("Radoc com identificador "+ radoc.getId() + " já existe.");
+    }
     Radoc radocSalvo = radocDAO.create(radoc);
     return radocSalvo.getId();
   }
 
   @Override
   public void removeRadoc(String identificador) {
-    radocDAO.delete(identificador);
-    if(radocById(identificador) != null){
-      throw new SecurityException("Falha ao remover radoc.");
+    if(parecerDAO.verificaRadocReferenciado(identificador)){
+      throw new ExisteParecerReferenciandoRadoc("Radoc " + identificador + " é referenciado por um parecer!");
     }
+    radocDAO.delete(identificador);
   }
 
 }

@@ -2,9 +2,9 @@ package br.inf.ufg.persistencia.repository;
 
 import br.inf.ufg.persistencia.RepositoryTestSuite;
 import br.ufg.inf.es.saep.sandbox.dominio.Atributo;
+import br.ufg.inf.es.saep.sandbox.dominio.IdentificadorExistente;
 import br.ufg.inf.es.saep.sandbox.dominio.ResolucaoRepository;
 import br.ufg.inf.es.saep.sandbox.dominio.Tipo;
-import com.mongodb.DuplicateKeyException;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -50,7 +50,7 @@ public class TipoTest {
     Assert.assertNotNull("Tipo não foi encontrada com sucesso pelo identificador.", tipoSalvo);
     Assert.assertEquals("O tipo não está sendo salvo.", tipo, tipoSalvo);
     Tipo outroTipoIgual = criaTipo(identificadorTipo, "tipo", "");
-    exception.expect(DuplicateKeyException.class);
+    exception.expect(IdentificadorExistente.class);
     resolucaoRepository.persisteTipo(outroTipoIgual);
   }
 

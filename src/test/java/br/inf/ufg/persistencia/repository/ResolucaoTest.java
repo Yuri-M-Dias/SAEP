@@ -60,8 +60,8 @@ public class ResolucaoTest {
       String placeholder = "regra-" + i;
       List<String> dependeDe = new ArrayList<>();
       dependeDe.add("nada");
-      Regra regra = new Regra(1, placeholder, 20, 5, placeholder, placeholder, placeholder, placeholder,placeholder,
-        5, dependeDe);
+      Regra regra = new Regra(placeholder, 1, placeholder, 20, 5, placeholder, placeholder, placeholder,
+        placeholder, 5, dependeDe);
       regras.add(regra);
     }
     return regras;

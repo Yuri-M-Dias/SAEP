@@ -28,7 +28,16 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
     if (resolucao.getId() == null){
       throw new CampoExigidoNaoFornecido("identificador");
     }
-    Resolucao resolucaoSalva = resolucaoDAO.create(resolucao);
+    if (byId(resolucao.getId()) != null){
+      throw new IdentificadorExistente("Identificador já existe para uma Resolução.");
+    }
+    Resolucao resolucaoSalva = null;
+    try {
+      resolucaoSalva = resolucaoDAO.create(resolucao);
+    } catch (Exception e){
+      e.printStackTrace();
+      return null;
+    }
     return resolucao.getId();
   }
 
@@ -46,6 +55,9 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
 
   @Override
   public void persisteTipo(Tipo tipo) {
+    if(tipo.getId() != null && tipoPeloCodigo(tipo.getId()) != null){
+      throw new IdentificadorExistente("Identificador para tipo já existe!");
+    }
     tipoDAO.create(tipo);
   }
 

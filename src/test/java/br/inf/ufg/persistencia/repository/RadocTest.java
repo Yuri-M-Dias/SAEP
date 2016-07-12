@@ -2,10 +2,7 @@ package br.inf.ufg.persistencia.repository;
 
 import br.inf.ufg.persistencia.RepositoryTestSuite;
 import br.inf.ufg.persistencia.json.SAEPJacksonModule;
-import br.ufg.inf.es.saep.sandbox.dominio.ParecerRepository;
-import br.ufg.inf.es.saep.sandbox.dominio.Radoc;
-import br.ufg.inf.es.saep.sandbox.dominio.Relato;
-import br.ufg.inf.es.saep.sandbox.dominio.Valor;
+import br.ufg.inf.es.saep.sandbox.dominio.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -23,7 +20,7 @@ public class RadocTest {
   }
 
   @Test
-  public void NoRelationshipsCRDRadoc() throws Exception {
+  public void semRelacionamentosCRDRadoc() throws Exception {
     String identificador = UUID.randomUUID().toString();
     Radoc radoc = criaRadoc(identificador);
     parecerRepository.persisteRadoc(radoc);
@@ -38,13 +35,22 @@ public class RadocTest {
     Assert.assertNull("Radoc não foi removido com sucesso.", radocRemovido);
   }
 
-  @Test
-  public void jacksonMapSerialization() throws Exception {
-    ObjectMapper mapper = SAEPJacksonModule.createSAEPObjectMapper();
+  @Test(expected = ExisteParecerReferenciandoRadoc.class)
+  public void falhaRemoverRadocReferenciadoPorParecer() throws Exception {
     String identificador = UUID.randomUUID().toString();
-    Radoc radoc = criaRadoc(identificador);
-    String resultJson = mapper.writeValueAsString(radoc.getRelatos());
-    System.out.println(resultJson);
+    String radocId = UUID.randomUUID().toString();
+    Parecer parecer = criaParecer(identificador, radocId);
+    parecerRepository.persisteParecer(parecer);
+    Parecer parecerSalvo = parecerRepository.byId(identificador);
+    Assert.assertNotNull("Parecer não está sendo salvo.", parecerSalvo);
+    Radoc radoc = criaRadoc(radocId);
+    parecerRepository.persisteRadoc(radoc);
+    Radoc radocSalvo = parecerRepository.radocById(radocId);
+    Assert.assertNotNull("Radoc não foi encontrado com sucesso pelo identificador.", radocSalvo);
+    parecerRepository.removeRadoc(radocId);
+    parecerRepository.removeParecer(identificador);
+    Parecer parecerRemovido = parecerRepository.byId(identificador);
+    Assert.assertNull("Parecer não foi removido com sucesso.", parecerRemovido);
   }
 
   private Radoc criaRadoc(String identificador){
@@ -61,6 +67,41 @@ public class RadocTest {
       relatos.add(relato);
     }
     return new Radoc(identificador, 2015, relatos);
+  }
+
+  private Parecer criaParecer(String identificador, String idRadoc) {
+    List<String> radocsIDs = new ArrayList<>();
+    radocsIDs.add(idRadoc);
+    for (int i = 0; i < 5; i++) {
+      String radocId = UUID.randomUUID().toString();
+      radocsIDs.add(radocId);
+    }
+    List<Pontuacao> pontuacoes = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      String atributo = UUID.randomUUID().toString();
+      pontuacoes.add(geraPontuacao(atributo));
+    }
+    List<Nota> notas = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      String atributo = UUID.randomUUID().toString();
+      notas.add(geraNota(atributo));
+    }
+    return new Parecer(identificador, "resolucao", radocsIDs, pontuacoes, "fundamentacao", notas);
+  }
+
+  private Pontuacao geraPontuacao(String atributo) {
+    Valor valor = new Valor(atributo);
+    return new Pontuacao(atributo, valor);
+  }
+
+  private Nota geraNota(String atributo) {
+    Valor valor = new Valor(atributo);
+    Avaliavel novo = new Pontuacao(atributo, valor);
+    Valor valorNum = new Valor(true);
+    Map<String, Valor> map = new HashMap<>();
+    map.put("a key", valorNum);
+    Avaliavel antigo = new Relato(atributo, map);
+    return new Nota(antigo, novo, "uma descricao");
   }
 
 }
