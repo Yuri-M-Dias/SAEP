@@ -34,11 +34,11 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
     Resolucao resolucaoSalva = null;
     try {
       resolucaoSalva = resolucaoDAO.create(resolucao);
-    } catch (Exception e){
+    } catch (Exception e){//Requerimento da documentação do repository...
       e.printStackTrace();
       return null;
     }
-    return resolucao.getId();
+    return resolucaoSalva.getId();
   }
 
   @Override

@@ -10,6 +10,8 @@ import org.junit.rules.ExpectedException;
 
 import java.util.*;
 
+import static br.inf.ufg.persistencia.repository.UtilsGenerator.*;
+
 public class TipoTest {
 
   private static ResolucaoRepository resolucaoRepository;
@@ -26,7 +28,7 @@ public class TipoTest {
   }
 
   @Test
-  public void CRDTipoValido() throws Exception {
+  public void createReadDeleteTipo() throws Exception {
     String identificadorTipo = UUID.randomUUID().toString();
     Tipo tipo = criaTipo(identificadorTipo, "tipo", "");
     resolucaoRepository.persisteTipo(tipo);
@@ -56,7 +58,7 @@ public class TipoTest {
     List<Tipo> tiposAProcurar = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       String identificadorTipo = String.valueOf(i);
-      Tipo tipo = criaTipo(identificadorTipo, "tipo", "");
+      Tipo tipo = criaTipo(identificadorTipo, "tipoNome", "");
       resolucaoRepository.persisteTipo(tipo);
       tiposAProcurar.add(tipo);
     }
@@ -64,18 +66,17 @@ public class TipoTest {
     resolucaoRepository.persisteTipo(tipoEstranho1);
     Tipo tipoEstranho2 = criaTipo(UUID.randomUUID().toString(), "weird", "");
     resolucaoRepository.persisteTipo(tipoEstranho2);
-    Tipo tipoValidoEstranho = criaTipo(UUID.randomUUID().toString(), "weird", "tipo");
+    Tipo tipoValidoEstranho = criaTipo(UUID.randomUUID().toString(), "weird", "tipoNome");
     resolucaoRepository.persisteTipo(tipoValidoEstranho);
     tiposAProcurar.add(tipoValidoEstranho);
-    List<Tipo> tipos = resolucaoRepository.tiposPeloNome("tipo");
+    List<Tipo> tipos = resolucaoRepository.tiposPeloNome("tipoNome");
     Assert.assertNotNull("Tipos não foram encontrados com sucesso.", tipos);
     Assert.assertTrue("Não foram encontrados tipos.", tipos.size() > 0);
-    tipos.forEach(tipo -> Assert.assertNotNull("Tipo inválido.", tipo));
     Assert.assertEquals("Coleção de tipos não é igual.", tiposAProcurar, tipos);
   }
 
   @Test
-  public void removeTipoUtilizadoPorResolucaoFalha() throws Exception {
+  public void removeTipoUtilizadoPorResolucao() throws Exception {
     String identificadorTipo = UUID.randomUUID().toString();
     Tipo tipo = criaTipo(identificadorTipo, "tipo", "");
     resolucaoRepository.persisteTipo(tipo);
@@ -91,29 +92,11 @@ public class TipoTest {
     resolucaoRepository.removeTipo(identificadorTipo);
   }
 
-  private Tipo criaTipo(String id, String namePrepend, String nameAppend){
-    Set<Atributo> atributos = new HashSet<>();
-    for (int i = 0; i < 5; i++) {
-      atributos.add(new Atributo(String.valueOf(i), "um atributo", 1));
-    }
-    return new Tipo(id, namePrepend + "-" + id + "-" + nameAppend, "É um tipo.", atributos);
+  @Test
+  public void buscaTipoInexistente() throws Exception {
+    String identificadorTipo = UUID.randomUUID().toString();
+    Tipo tipoEncontrado = resolucaoRepository.tipoPeloCodigo(identificadorTipo);
+    Assert.assertNull("Tipo inexistente está sendo encontrado!", tipoEncontrado);
   }
 
-  private Resolucao criaResolucaoQueUsaTipo(String id, String identificadorTipo){
-    return new Resolucao(id, "123", "Uma resolução.", new Date(), criaRegras(identificadorTipo));
-  }
-
-  private List<Regra> criaRegras(String identifcadorTipo){
-    List<Regra> regras = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      String placeholder = "regra-" + i;
-      List<String> dependeDe = new ArrayList<>();
-      dependeDe.add("alguma coisa");
-      //Tipo 0 pra salvar o id
-      Regra regra = new Regra(placeholder, 0, placeholder, 20, 5, placeholder, placeholder, placeholder,
-        identifcadorTipo, 5, dependeDe);
-      regras.add(regra);
-    }
-    return regras;
-  }
 }

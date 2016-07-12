@@ -36,34 +36,30 @@ public class RepositoryTestSuite {
     System.setProperty("DEBUG.MONGO", "true");
     // Enable DB operation tracing
     System.setProperty("DB.TRACE", "true");
-
-    /**
-    //Database mock
-    Fongo fongo = new Fongo("mongo test server");
-    mongoDatabase = fongo.getDB("test");
-    */
-
-    // Actual Database
+    // Pega a conexão com o banco de dados.
+    //mongoDatabase = MongoConnection.getFakedDBConnection(); //Utilizado para testes locais.
     mongoDatabase = MongoConnection.getDBConnection();
+    //Deleta o banco já existente, e cria o BD de novo.
     MongoConnection.deleteDB();
     mongoDatabase = MongoConnection.getDBConnection();
-
     System.out.println("Conexão com o mongo: " + mongoDatabase);
     Assert.assertNotNull("Falha na conexão com o mongo", mongoDatabase);
-
   }
 
   /**
-   * Fecha a conexão com o Mongo e dá drop no DB.
+   * Fecha a conexão com o Mongo;
    */
   @AfterClass
   public static void deleteConnection(){
-    //mongoDatabase.getMongo().dropDatabase(DB_NAME);
     mongoDatabase.getMongo().close();
-    //MongoConnection.deleteDB();
-    //MongoConnection.closeDBConnection();
   }
 
+
+  /**
+   * Referência estática para uma conexão, para vias de testes.
+   *
+   * @return uma conexão com o MongoDB
+   */
   public static DB getMongoDatabase() {
     return mongoDatabase;
   }
