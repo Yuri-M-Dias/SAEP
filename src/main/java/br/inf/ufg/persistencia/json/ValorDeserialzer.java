@@ -12,7 +12,8 @@ import java.io.IOException;
 public class ValorDeserialzer extends JsonDeserializer<Valor> {
 
   @Override
-  public Valor deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+  public Valor deserialize(JsonParser p, DeserializationContext ctxt) throws
+    IOException, JsonProcessingException {
     Valor valor = null;
     JsonNode node = p.getCodec().readTree(p);
     Float floatValue = node.get("real").floatValue();
@@ -20,10 +21,10 @@ public class ValorDeserialzer extends JsonDeserializer<Valor> {
     String aString = node.get("string").asText();
 
     valor = new Valor(floatValue);
-    if(aBoolean){
+    if (aBoolean) {
       valor = new Valor(aBoolean);
       return valor;
-    } else if(!"".equals(aString) && !"null".equals(aString)){
+    } else if (!"".equals(aString) && !"null".equals(aString)) {
       valor = new Valor(aString);
       return valor;
     }

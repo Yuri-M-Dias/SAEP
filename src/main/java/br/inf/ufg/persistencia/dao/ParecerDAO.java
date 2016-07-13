@@ -16,7 +16,6 @@ import java.util.Optional;
 
 /**
  * Encapsula operações em comum sobre a coleção "Parecer".
- *
  */
 public class ParecerDAO extends BaseMongoDAO<Parecer> {
 
@@ -27,18 +26,23 @@ public class ParecerDAO extends BaseMongoDAO<Parecer> {
   /**
    * Atualiza uma fundamentação dentro de um parecer.
    *
-   * @param parecerId identificador único do parecer que será atualizado
-   * @param fundamentacao novo valor da fundamentação.
+   * @param parecerId
+   *         identificador único do parecer que será atualizado
+   * @param fundamentacao
+   *         novo valor da fundamentação.
    */
   public void atualizaFundamentacao(String parecerId, String fundamentacao) {
-    jacksonCollection.findAndModify(DBQuery.is("id", parecerId), DBUpdate.set("fundamentacao", fundamentacao));
+    jacksonCollection.findAndModify(DBQuery.is("id", parecerId), DBUpdate.set
+      ("fundamentacao", fundamentacao));
   }
 
   /**
    * Remove uma nota de um parecer, buscando pelo seu avaliável.
    *
-   * @param parecerId identificador do parecer a ser alterado.
-   * @param avaliavel avaliável original a procurar dentro das notas do parecer.
+   * @param parecerId
+   *         identificador do parecer a ser alterado.
+   * @param avaliavel
+   *         avaliável original a procurar dentro das notas do parecer.
    */
   public void removeNota(String parecerId, Avaliavel avaliavel) {
     Parecer parecer = jacksonCollection.findOne(DBQuery.is("id", parecerId));
@@ -49,7 +53,8 @@ public class ParecerDAO extends BaseMongoDAO<Parecer> {
         boolean result = false;
         try {
           //Necessário fazer deste jeito devido a falta de um .equals...
-          String itemOriginal = mapper.writeValueAsString(nota.getItemOriginal());
+          String itemOriginal =
+            mapper.writeValueAsString(nota.getItemOriginal());
           String itemAvaliavel = mapper.writeValueAsString(avaliavel);
           result = itemOriginal.equals(itemAvaliavel);
         } catch (JsonProcessingException e) {
@@ -69,8 +74,10 @@ public class ParecerDAO extends BaseMongoDAO<Parecer> {
   /**
    * Adiciona nota a coleção "notas" do parecer referenciado.
    *
-   * @param parecerId id do parecer a adicionar a nota.
-   * @param nota      nota a ser adiciona.
+   * @param parecerId
+   *         id do parecer a adicionar a nota.
+   * @param nota
+   *         nota a ser adiciona.
    */
   public void adicionaNota(String parecerId, Nota nota) {
     jacksonCollection.findAndModify(DBQuery.is("id", parecerId),
@@ -80,8 +87,10 @@ public class ParecerDAO extends BaseMongoDAO<Parecer> {
   /**
    * Verifica se um parecer possui um radoc com o identificador fornecido.
    *
-   * @param identificador identificador do radoc que será verificado.
-   * @return true se estivier um parecer que referencia esse radoc, falso caso o contrário.
+   * @param identificador
+   *         identificador do radoc que será verificado.
+   * @return true se estivier um parecer que referencia esse radoc, falso caso
+   * o contrário.
    */
   public boolean verificaRadocReferenciado(String identificador) {
     boolean result = jacksonCollection

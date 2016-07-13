@@ -7,12 +7,13 @@ import com.mongodb.MongoClient;
 import java.net.UnknownHostException;
 
 /**
- * Classe para encapsular uma conexão com o banco de dados, seja real ou falsificado.
+ * Classe para encapsular uma conexão com o banco de dados, seja real ou
+ * falsificado.
  */
 public class MongoConnection {
 
-  private static MongoClient mongo = null;
   private static final String DB_NAME = "saep";
+  private static MongoClient mongo = null;
 
   /**
    * Pega uma conexão válida para uma instância do mongo real.

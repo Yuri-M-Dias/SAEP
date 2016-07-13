@@ -15,12 +15,13 @@ import java.io.IOException;
 public class AvaliavelDeserializer extends JsonDeserializer<Avaliavel> {
 
   @Override
-  public Avaliavel deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+  public Avaliavel deserialize(JsonParser p, DeserializationContext ctxt) throws
+    IOException, JsonProcessingException {
     Avaliavel result = null;
     ObjectMapper mapper = SAEPJacksonModule.createSAEPObjectMapper();
     JsonNode node = p.getCodec().readTree(p);
     JsonNode atributo = node.get("atributo");
-    if(atributo != null){
+    if (atributo != null) {
       // É uma pontuacao
       Pontuacao pontuacao = mapper.readValue(node.toString(), Pontuacao.class);
       result = pontuacao;

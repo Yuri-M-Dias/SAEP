@@ -13,8 +13,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- * Classe para agregar as outras classes de testes, para que todas rodem junto de uma forma faciltiada.
- * Também serve para diminuir boilerplate e acoplamento com a conexão do DB.
+ * Classe para agregar as outras classes de testes, para que todas rodem junto
+ * de uma forma faciltiada. Também serve para diminuir boilerplate e acoplamento
+ * com a conexão do DB.
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -28,16 +29,18 @@ public class RepositoryTestSuite {
   private static DB mongoDatabase;
 
   /**
-   * Abre a conexão com o banco e instancia o br.inf.ufg.persistencia.test.repository.
+   * Abre a conexão com o banco e instancia o br.inf.ufg.persistencia.test
+   * .repository.
    */
   @BeforeClass
-  public static void initDatabaseConnection(){
+  public static void initDatabaseConnection() {
     // Enable MongoDB logging in general
     System.setProperty("DEBUG.MONGO", "true");
     // Enable DB operation tracing
     System.setProperty("DB.TRACE", "true");
     // Pega a conexão com o banco de dados.
-    //mongoDatabase = MongoConnection.getFakedDBConnection(); //Utilizado para testes locais.
+    //mongoDatabase = MongoConnection.getFakedDBConnection(); //Utilizado
+    // para testes locais.
     mongoDatabase = MongoConnection.getDBConnection();
     //Deleta o banco já existente, e cria o BD de novo.
     MongoConnection.deleteDB();
@@ -50,7 +53,7 @@ public class RepositoryTestSuite {
    * Fecha a conexão com o Mongo;
    */
   @AfterClass
-  public static void deleteConnection(){
+  public static void deleteConnection() {
     mongoDatabase.getMongo().close();
   }
 

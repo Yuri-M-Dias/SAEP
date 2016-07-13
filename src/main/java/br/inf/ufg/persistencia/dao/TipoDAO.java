@@ -17,7 +17,8 @@ public class TipoDAO extends BaseMongoDAO<Tipo> {
 
   public List<Tipo> findByName(String name) {
     List<Tipo> tipos;
-    DBCursor<Tipo> tiposQuery = jacksonCollection.find(DBQuery.regex("nome", Pattern.compile(name)));
+    DBCursor<Tipo> tiposQuery =
+      jacksonCollection.find(DBQuery.regex("nome", Pattern.compile(name)));
     tipos = tiposQuery.toArray();
     return tipos;
   }

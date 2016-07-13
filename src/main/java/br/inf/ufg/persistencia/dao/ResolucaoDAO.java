@@ -21,7 +21,7 @@ public class ResolucaoDAO extends BaseMongoDAO<Resolucao> {
 
   public boolean verificaSeAlgumaResolucaoUsaRelato(String codigo) {
     DBCursor<Resolucao> cursorResolucoes = jacksonCollection
-      .find(DBQuery.elemMatch("regras", DBQuery.in("tipoRelato",codigo)));
+      .find(DBQuery.elemMatch("regras", DBQuery.in("tipoRelato", codigo)));
     return cursorResolucoes.count() > 0;
   }
 

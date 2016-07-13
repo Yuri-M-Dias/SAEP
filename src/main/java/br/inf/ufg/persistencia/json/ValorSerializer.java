@@ -14,7 +14,8 @@ import java.io.IOException;
 public class ValorSerializer extends JsonSerializer<Valor> {
 
   @Override
-  public void serialize(Valor value, JsonGenerator gen, SerializerProvider serializers)
+  public void serialize(Valor value, JsonGenerator gen, SerializerProvider
+    serializers)
     throws IOException, JsonProcessingException {
     gen.writeStartObject();
     gen.writeNumberField("real", value.getFloat());

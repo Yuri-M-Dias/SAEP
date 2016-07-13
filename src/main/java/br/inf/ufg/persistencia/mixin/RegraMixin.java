@@ -20,7 +20,8 @@ public abstract class RegraMixin extends Regra {
                     @JsonProperty("tipoRelato") String tipoRelato,
                     @JsonProperty("pontosPorItem") float pontosPorItem,
                     @JsonProperty("dependeDe") List<String> dependeDe) {
-    super(variavel, tipo, descricao, valorMaximo, valorMinimo, expressao, entao, senao, tipoRelato, pontosPorItem, dependeDe);
+    super(variavel, tipo, descricao, valorMaximo, valorMinimo, expressao,
+      entao, senao, tipoRelato, pontosPorItem, dependeDe);
   }
 
   @JsonProperty("tipoRelato")

@@ -9,7 +9,8 @@ import org.mongojack.JacksonDBCollection;
 import org.mongojack.WriteResult;
 
 /**
- * Encapsula operações em comum entre os repositórios.
+ * Encapsula operações em comum entre os diferentes DAOs, deixando uma
+ * implementação padrão para as operações mais repetitivas.
  */
 public abstract class BaseMongoDAO<T> {
 
@@ -20,14 +21,16 @@ public abstract class BaseMongoDAO<T> {
   protected JacksonDBCollection<T, String> jacksonCollection;
   protected Class currentGenericClass;
 
-  protected BaseMongoDAO(String collectionName, DB mongoDatabase, Class clazz){
+  protected BaseMongoDAO(String collectionName, DB mongoDatabase, Class clazz) {
     this.currentGenericClass = clazz;
     this.collectionName = collectionName;
     this.mongoDatabase = mongoDatabase;
     // Cria a coleção sozinho se ela não existir
     this.mongoCollection = mongoDatabase.getCollection(collectionName);
-    this.jacksonCollection = JacksonDBCollection.wrap(this.mongoCollection, this.currentGenericClass, String
-      .class, SAEPJacksonModule.createSAEPObjectMapper());
+    this.jacksonCollection =
+      JacksonDBCollection.wrap(this.mongoCollection,
+        this.currentGenericClass, String.class,
+        SAEPJacksonModule.createSAEPObjectMapper());
     //Assume que toda coleção tem um campo "id" para ser unique.
     BasicDBObject idIndex = new BasicDBObject("id", 1);
     BasicDBObject idIndexOptions = new BasicDBObject("unique", "true");
@@ -40,7 +43,7 @@ public abstract class BaseMongoDAO<T> {
     return objetoSalvo;
   }
 
-  public T findById(String id){
+  public T findById(String id) {
     T element = jacksonCollection.findOne(DBQuery.is("id", id));
     return element;
   }
@@ -55,7 +58,7 @@ public abstract class BaseMongoDAO<T> {
    *
    * @return a classe T anotada para essa classe base
    */
-  public Class getCurrentGenericClass(){
+  public Class getCurrentGenericClass() {
     return currentGenericClass;
   }
 

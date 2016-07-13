@@ -25,7 +25,8 @@ public class UtilsGenerator {
       String atributo = UUID.randomUUID().toString();
       notas.add(geraNota(atributo));
     }
-    return new Parecer(identificador, "resolucao", radocsIDs, pontuacoes, "fundamentacao", notas);
+    return new Parecer(identificador, "resolucao", radocsIDs, pontuacoes,
+      "fundamentacao", notas);
   }
 
   public static Pontuacao geraPontuacao(String atributo) {
@@ -62,16 +63,20 @@ public class UtilsGenerator {
   }
 
 
-  public static Tipo criaTipo(String id, String namePrepend, String nameAppend) {
+  public static Tipo criaTipo(String id, String namePrepend, String
+    nameAppend) {
     Set<Atributo> atributos = new HashSet<>();
     for (int i = 0; i < 5; i++) {
       atributos.add(new Atributo(String.valueOf(i), "um atributo", 1));
     }
-    return new Tipo(id, namePrepend + "-" + id + "-" + nameAppend, "É um tipo.", atributos);
+    return new Tipo(id, namePrepend + "-" + id + "-" + nameAppend, "É um tipo" +
+      ".", atributos);
   }
 
-  public static Resolucao criaResolucaoQueUsaTipo(String id, String identificadorTipo) {
-    return new Resolucao(id, "123", "Uma resolução.", new Date(), criaRegras(identificadorTipo));
+  public static Resolucao criaResolucaoQueUsaTipo(String id, String
+    identificadorTipo) {
+    return new Resolucao(id, "123", "Uma resolução.", new Date(), criaRegras
+      (identificadorTipo));
   }
 
   public static List<Regra> criaRegras(String identifcadorTipo) {
@@ -81,8 +86,10 @@ public class UtilsGenerator {
       List<String> dependeDe = new ArrayList<>();
       dependeDe.add("alguma coisa");
       //Tipo 0 pra salvar o id
-      Regra regra = new Regra(placeholder, 0, placeholder, 20, 5, placeholder, placeholder, placeholder,
-        identifcadorTipo, 5, dependeDe);
+      Regra regra =
+        new Regra(placeholder, 0, placeholder, 20, 5, placeholder,
+          placeholder, placeholder,
+          identifcadorTipo, 5, dependeDe);
       regras.add(regra);
     }
     return regras;
@@ -139,7 +146,8 @@ public class UtilsGenerator {
       String atributo = UUID.randomUUID().toString();
       notas.add(geraNota(atributo));
     }
-    return new Parecer(identificador, "resolucao", radocsIDs, pontuacoes, "fundamentacao", notas);
+    return new Parecer(identificador, "resolucao", radocsIDs, pontuacoes,
+      "fundamentacao", notas);
   }
 
 }

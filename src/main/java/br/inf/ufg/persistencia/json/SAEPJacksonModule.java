@@ -18,6 +18,26 @@ public class SAEPJacksonModule extends SimpleModule {
     super();
   }
 
+  /**
+   * Referência estática que cria um novo ObjectMapper do Jackson com as
+   * configurações necessárias.
+   *
+   * @return um ObjectMapper pronto para serializar as classes do modelo
+   * atual.
+   */
+  public static ObjectMapper createSAEPObjectMapper() {
+    SAEPJacksonModule saepJacksonModule = new SAEPJacksonModule();
+    saepJacksonModule.addSerializer(Valor.class, new ValorSerializer());
+    saepJacksonModule.addDeserializer(Valor.class, new ValorDeserialzer());
+    saepJacksonModule.addDeserializer(Avaliavel.class, new
+      AvaliavelDeserializer());
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(saepJacksonModule);
+    mapper.setVisibility(FIELD, ANY);
+    MongoJackModule.configure(mapper);
+    return mapper;
+  }
+
   @Override
   public void setupModule(SetupContext context) {
     super.setupModule(context);
@@ -32,22 +52,6 @@ public class SAEPJacksonModule extends SimpleModule {
     context.setMixInAnnotations(Relato.class, RelatoMixin.class);
     context.setMixInAnnotations(Nota.class, NotaMixin.class);
 
-  }
-
-  /**
-   * Referência estática que cria um novo ObjectMapper do Jackson com as configurações necessárias.
-   * @return um ObjectMapper pronto para serializar as classes do modelo atual.
-   */
-  public static ObjectMapper createSAEPObjectMapper(){
-    SAEPJacksonModule saepJacksonModule = new SAEPJacksonModule();
-    saepJacksonModule.addSerializer(Valor.class, new ValorSerializer());
-    saepJacksonModule.addDeserializer(Valor.class, new ValorDeserialzer());
-    saepJacksonModule.addDeserializer(Avaliavel.class, new AvaliavelDeserializer());
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(saepJacksonModule);
-    mapper.setVisibility(FIELD, ANY);
-    MongoJackModule.configure(mapper);
-    return mapper;
   }
 
 }

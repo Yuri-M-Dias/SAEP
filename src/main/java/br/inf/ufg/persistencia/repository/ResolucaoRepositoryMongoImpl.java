@@ -25,16 +25,17 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
 
   @Override
   public String persiste(Resolucao resolucao) {
-    if (resolucao.getId() == null){
+    if (resolucao.getId() == null) {
       throw new CampoExigidoNaoFornecido("identificador");
     }
-    if (byId(resolucao.getId()) != null){
-      throw new IdentificadorExistente("Identificador já existe para uma Resolução.");
+    if (byId(resolucao.getId()) != null) {
+      throw new IdentificadorExistente("Identificador já existe para uma " +
+        "Resolução.");
     }
     Resolucao resolucaoSalva = null;
     try {
       resolucaoSalva = resolucaoDAO.create(resolucao);
-    } catch (Exception e){//Requerimento da documentação do repository...
+    } catch (Exception e) {//Requerimento da documentação do repository...
       e.printStackTrace();
       return null;
     }
@@ -55,7 +56,7 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
 
   @Override
   public void persisteTipo(Tipo tipo) {
-    if(tipo.getId() != null && tipoPeloCodigo(tipo.getId()) != null){
+    if (tipo.getId() != null && tipoPeloCodigo(tipo.getId()) != null) {
       throw new IdentificadorExistente("Identificador para tipo já existe!");
     }
     tipoDAO.create(tipo);
@@ -63,8 +64,9 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
 
   @Override
   public void removeTipo(String codigo) {
-    if(resolucaoDAO.verificaSeAlgumaResolucaoUsaRelato(codigo)){
-      throw new ResolucaoUsaTipoException("O tipo é utilizado por pelo menos uma resolução!");
+    if (resolucaoDAO.verificaSeAlgumaResolucaoUsaRelato(codigo)) {
+      throw new ResolucaoUsaTipoException("O tipo é utilizado por pelo menos " +
+        "uma resolução!");
     }
     tipoDAO.delete(codigo);
   }
