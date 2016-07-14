@@ -79,7 +79,7 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
 
   @Override
   public List<Tipo> tiposPeloNome(String nome) {
-    List<Tipo> tipos = tipoDAO.findByName(nome);
+    List<Tipo> tipos = tipoDAO.procuraPeloNome(nome);
     return tipos;
   }
 

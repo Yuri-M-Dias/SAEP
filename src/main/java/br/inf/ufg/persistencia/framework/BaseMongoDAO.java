@@ -21,6 +21,17 @@ public abstract class BaseMongoDAO<T> {
   protected JacksonDBCollection<T, String> jacksonCollection;
   protected Class currentGenericClass;
 
+  /**
+   * Construtor padrão que possui as operações semelhantes entre as classes.
+   *
+   * @param collectionName
+   *         nome da coleção que será utilizada no banco de dados.
+   * @param mongoDatabase
+   *         conexão com o mongo que será utilizada por este DAO.
+   * @param clazz
+   *         classe sobre o qual as operações serão feitas, para saber o
+   *         retorno exato.
+   */
   protected BaseMongoDAO(String collectionName, DB mongoDatabase, Class clazz) {
     this.currentGenericClass = clazz;
     this.collectionName = collectionName;
