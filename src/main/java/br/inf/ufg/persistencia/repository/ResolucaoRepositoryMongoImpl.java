@@ -50,7 +50,7 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
 
   @Override
   public List<String> resolucoes() {
-    List<String> resolucoesIds = resolucaoDAO.findAllIds();
+    List<String> resolucoesIds = resolucaoDAO.procuraTodosPeloId();
     return resolucoesIds;
   }
 
