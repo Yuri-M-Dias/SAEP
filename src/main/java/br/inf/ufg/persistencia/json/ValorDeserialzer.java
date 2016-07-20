@@ -9,17 +9,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 
+/**
+ * Deserializador customizado para a classe {@link Valor}
+ */
 public class ValorDeserialzer extends JsonDeserializer<Valor> {
 
   @Override
   public Valor deserialize(JsonParser p, DeserializationContext ctxt) throws
     IOException, JsonProcessingException {
-    Valor valor = null;
+    Valor valor;
     JsonNode node = p.getCodec().readTree(p);
     Float floatValue = node.get("real").floatValue();
     Boolean aBoolean = node.get("logico").asBoolean();
     String aString = node.get("string").asText();
-
     valor = new Valor(floatValue);
     if (aBoolean) {
       valor = new Valor(aBoolean);

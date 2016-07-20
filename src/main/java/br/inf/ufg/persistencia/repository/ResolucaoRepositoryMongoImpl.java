@@ -19,8 +19,7 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
 
   @Override
   public Resolucao byId(String id) {
-    Resolucao resolucaoEncontrada = resolucaoDAO.findById(id);
-    return resolucaoEncontrada;
+    return resolucaoDAO.findById(id);
   }
 
   @Override
@@ -50,8 +49,13 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
 
   @Override
   public List<String> resolucoes() {
-    List<String> resolucoesIds = resolucaoDAO.procuraTodosPeloId();
-    return resolucoesIds;
+    List<String> lista = resolucaoDAO.procuraTodosPeloId();
+    try {
+      lista = resolucaoDAO.procuraTodosPeloId();
+    } catch (Exception e) {
+      //Não faz nada.
+    }
+    return lista;
   }
 
   @Override
@@ -59,7 +63,11 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
     if (tipo.getId() != null && tipoPeloCodigo(tipo.getId()) != null) {
       throw new IdentificadorExistente("Identificador para tipo já existe!");
     }
-    tipoDAO.create(tipo);
+    try {
+      tipoDAO.create(tipo);
+    } catch (Exception e) {
+      //Não faz nada.
+    }
   }
 
   @Override
@@ -73,13 +81,23 @@ public class ResolucaoRepositoryMongoImpl implements ResolucaoRepository {
 
   @Override
   public Tipo tipoPeloCodigo(String codigo) {
-    Tipo tipo = tipoDAO.findById(codigo);
+    Tipo tipo = null;
+    try {
+      tipo = tipoDAO.findById(codigo);
+    } catch (Exception e) {
+      //Não faz nada.
+    }
     return tipo;
   }
 
   @Override
   public List<Tipo> tiposPeloNome(String nome) {
-    List<Tipo> tipos = tipoDAO.procuraPeloNome(nome);
+    List<Tipo> tipos = null;
+    try {
+      tipos = tipoDAO.procuraPeloNome(nome);
+    } catch (Exception e) {
+      //Não faz nada.
+    }
     return tipos;
   }
 

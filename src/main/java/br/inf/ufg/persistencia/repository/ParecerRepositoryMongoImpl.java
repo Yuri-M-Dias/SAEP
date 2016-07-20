@@ -36,11 +36,13 @@ public class ParecerRepositoryMongoImpl implements ParecerRepository {
 
   @Override
   public void persisteParecer(Parecer parecer) {
-    if (byId(parecer.getId()) != null) {
+    //Catch em qualquer exceção lançada.
+    try {
+      parecerDAO.create(parecer);
+    } catch (Exception e) {
       throw new IdentificadorExistente("Parecer com identificador " + parecer
         .getId() + " já existe.");
     }
-    parecerDAO.create(parecer);
   }
 
   @Override
@@ -53,7 +55,13 @@ public class ParecerRepositoryMongoImpl implements ParecerRepository {
 
   @Override
   public Parecer byId(String id) {
-    return parecerDAO.findById(id);
+    Parecer parecer = null;
+    try {
+      parecer = parecerDAO.findById(id);
+    } catch (Exception e){
+      //Não faz nada
+    }
+    return parecer;
   }
 
   @Override
@@ -72,7 +80,15 @@ public class ParecerRepositoryMongoImpl implements ParecerRepository {
       throw new IdentificadorExistente("Radoc com identificador " + radoc
         .getId() + " já existe.");
     }
-    Radoc radocSalvo = radocDAO.create(radoc);
+    Radoc radocSalvo = null;
+    try{
+        radocSalvo = radocDAO.create(radoc);
+    } catch (Exception e){
+      //Não faz nada.
+    }
+    if (radocSalvo == null || radocSalvo.getId() != null) {
+      return null;
+    }
     return radocSalvo.getId();
   }
 
