@@ -4,7 +4,11 @@ import com.github.fakemongo.Fongo;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.UnknownHostException;
+import java.util.Properties;
 
 /**
  * Classe para encapsular uma conexão com o banco de dados, seja real ou
@@ -12,8 +16,11 @@ import java.net.UnknownHostException;
  */
 public class MongoConnection {
 
-  private static final String DB_NAME = "saep";
+  private static String URL_BANCO;
+  private static String DB_NAME;
   private static MongoClient mongo = null;
+  private static String PORTA_BANCO;
+  private static String FONGO;
 
   /**
    * Pega uma conexão válida para uma instância do mongo real.
@@ -21,20 +28,24 @@ public class MongoConnection {
    * @return uma conexão real com o Mongo.
    */
   public static DB getDBConnection() {
-    DB db = null;
-    //Conexões ao mongo propriamente dito.
     try {
-      // Rodando no Docker
-      //mongo = new MongoClient("172.17.0.1", 27017);
-      // Rodando no travis/local
-      mongo = new MongoClient("localhost", 27017);
+      leArquivoConfiguracao();
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new SecurityException("Não consegui abrir a conexão com o banco " +
+        "de dados.");
+    }
+    DB db = null;
+    try {
+      mongo = new MongoClient(URL_BANCO, Integer.parseInt(PORTA_BANCO));
       db = mongo.getDB(DB_NAME);
     } catch (UnknownHostException e) {
       e.printStackTrace();
       throw new SecurityException("Não consegui abrir o banco de dados.", e);
     }
     if (db == null) {
-      throw new SecurityException("Não consegui abrir o banco de dados.");
+      throw new SecurityException("Não consegui abrir a conexão com o banco " +
+        "de dados.");
     }
     return db;
   }
@@ -62,6 +73,23 @@ public class MongoConnection {
 
   public static void deleteDB() {
     mongo.dropDatabase(DB_NAME);
+  }
+
+  private static void leArquivoConfiguracao() throws IOException {
+    Properties prop = new Properties();
+    String propFileName = "config.properties";
+    InputStream inputStream = MongoConnection.class.getClassLoader()
+      .getResourceAsStream(propFileName);
+    if (inputStream != null) {
+      prop.load(inputStream);
+    } else {
+      throw new FileNotFoundException("Arquivo de configuração não está " +
+        "presente.");
+    }
+    DB_NAME = prop.getProperty("nomeBanco");
+    URL_BANCO = prop.getProperty("urlBanco");
+    PORTA_BANCO = prop.getProperty("portaBanco");
+    FONGO = prop.getProperty("fongo");
   }
 
 }
