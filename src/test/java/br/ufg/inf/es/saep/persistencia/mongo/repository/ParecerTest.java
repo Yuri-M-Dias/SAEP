@@ -11,6 +11,13 @@ import org.junit.Test;
 
 import java.util.UUID;
 
+import static br.ufg.inf.es.saep.persistencia.mongo.repository.UtilsGenerator
+  .criaParecer;
+import static br.ufg.inf.es.saep.persistencia.mongo.repository.UtilsGenerator
+  .geraNota;
+import static br.ufg.inf.es.saep.persistencia.mongo.repository.UtilsGenerator
+  .geraPontuacao;
+
 public class ParecerTest {
 
   private static ParecerRepository parecerRepository;
